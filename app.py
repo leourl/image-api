@@ -4,11 +4,19 @@ from flask import Flask, request, render_template, send_from_directory
 import os
 from PIL import Image
 import plat
+from zipfile import ZipFile
 
 app = Flask(__name__)
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+plat_br = ('now', 'sky', 'google', 'vivo')
+plat = {
+    'google': (2000, 3000),
+    'sky' : (1000, 1500),
+    'vivo': (600, 882),
+    'now' : (220, 340),
 
+}
 
 # default access page
 @app.route("/")
@@ -46,148 +54,50 @@ def upload():
     return render_template("processing.html", image_name=filename)
 
 
-# rotate filename the specified degrees
-@app.route("/rotate", methods=["POST"])
-def rotate():
+# now filename the specified degrees
+@app.route("/now", methods=["POST"])
+def now():
     # retrieve parameters from html form
-    #angle = request.form['angle']
+    # angle = request.form['angle']
     filename = request.form['image']
 
     # open and process image
     target = os.path.join(APP_ROOT, 'static/images')
     destination = "/".join([target, filename])
-
-    img = Image.open(destination)
-    img = img.resize(plat.now)
-
-    # save and return image
-    destination = "/".join([target, 'temp.png'])
-    if os.path.isfile(destination):
-        os.remove(destination)
-    img.save(destination)
-
-    return send_image('temp.png')
-
-
-# flip filename 'vertical' or 'horizontal'
-@app.route("/flip", methods=["POST"])
-def flip():
-    # retrieve parameters from html form
-    if 'horizontal' in request.form['mode']:
-        mode = 'horizontal'
-    elif 'vertical' in request.form['mode']:
-        mode = 'vertical'
-    else:
-        return render_template("error.html", message="Mode not supported (vertical - horizontal)"), 400
-    filename = request.form['image']
-
-    # open and process image
-    target = os.path.join(APP_ROOT, 'static/images')
-    destination = "/".join([target, filename])
-
-    img = Image.open(destination)
-
-    if mode == 'horizontal':
-        img = img.transpose(Image.FLIP_LEFT_RIGHT)
-    else:
-        img = img.transpose(Image.FLIP_TOP_BOTTOM)
-
-    # save and return image
-    destination = "/".join([target, 'temp.png'])
-    if os.path.isfile(destination):
-        os.remove(destination)
-    img.save(destination)
-
-    return send_image('temp.png')
-
-
-# crop filename from (x1,y1) to (x2,y2)
-@app.route("/crop", methods=["POST"])
-def crop():
-    # retrieve parameters from html form
-    x1 = int(request.form['x1'])
-    y1 = int(request.form['y1'])
-    x2 = int(request.form['x2'])
-    y2 = int(request.form['y2'])
-    filename = request.form['image']
-
-    # open image
-    target = os.path.join(APP_ROOT, 'static/images')
-    destination = "/".join([target, filename])
-
-    img = Image.open(destination)
-
-    # check for valid crop parameters
-    width = img.size[0]
-    height = img.size[1]
-
-    crop_possible = True
-    if not 0 <= x1 < width:
-        crop_possible = False
-    if not 0 < x2 <= width:
-        crop_possible = False
-    if not 0 <= y1 < height:
-        crop_possible = False
-    if not 0 < y2 <= height:
-        crop_possible = False
-    if not x1 < x2:
-        crop_possible = False
-    if not y1 < y2:
-        crop_possible = False
-
-    # crop image and show
-    if crop_possible:
-        img = img.crop((x1, y1, x2, y2))
-
+    poster = destination
+    # create a ZipFile object
+    zipobj = ZipFile(target + '/' + filename[:-4] + '.zip', 'w')
+    for c in plat_br:
+        plat_size = plat[c]
+        img = Image.open(poster)
+        img = img.resize(plat_size, Image.ANTIALIAS)
         # save and return image
-        destination = "/".join([target, 'temp.png'])
+        destination = "/".join([target, c + '_' + filename])
         if os.path.isfile(destination):
             os.remove(destination)
         img.save(destination)
-        return send_image('temp.png')
-    else:
-        return render_template("error.html", message="Crop dimensions not valid"), 400
-    return '', 204
+        # Add multiple files to the zip
+        zipobj.write(destination, c + '_' + filename)
+        print('target ' + target)
+        print('destination ' + destination)
+        print('filename ' + filename)
+    print(zipobj)
 
+    # close the Zip File
+    zipobj.close()
 
-# blend filename with stock photo and alpha parameter
-@app.route("/blend", methods=["POST"])
-def blend():
-    # retrieve parameters from html form
-    alpha = request.form['alpha']
-    filename1 = request.form['image']
+    return send_image(filename)
 
-    # open images
-    target = os.path.join(APP_ROOT, 'static/images')
-    filename2 = 'blend.jpg'
-    destination1 = "/".join([target, filename1])
-    destination2 = "/".join([target, filename2])
-
-    img1 = Image.open(destination1)
-    img2 = Image.open(destination2)
-
-    # resize images to max dimensions
-    width = max(img1.size[0], img2.size[0])
-    height = max(img1.size[1], img2.size[1])
-
-    img1 = img1.resize((width, height), Image.ANTIALIAS)
-    img2 = img2.resize((width, height), Image.ANTIALIAS)
-
-    # if image in gray scale, convert stock image to monochrome
-    if len(img1.mode) < 3:
-        img2 = img2.convert('L')
-
-    # blend and show image
-    img = Image.blend(img1, img2, float(alpha) / 100)
+    # img = Image.open(destination)
+    # img = img.resize(plat.now, Image.ANTIALIAS)
 
     # save and return image
-    destination = "/".join([target, 'temp.png'])
-    if os.path.isfile(destination):
-        os.remove(destination)
-    img.save(destination)
-
-    return send_image('temp.png')
-
+    # destination = "/".join([target, 'temp.jpg'])
+    # if os.path.isfile(destination):
+    #     os.remove(destination)
+    # img.save(destination)
+    #
+    # return send_image('temp.png')
 
 # retrieve file from 'static/images' directory
 @app.route('/static/images/<filename>')
