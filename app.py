@@ -1,6 +1,6 @@
 # web-app for API image manipulation
 
-from flask import Flask, request, render_template, send_from_directory
+from flask import Flask, request, render_template, send_from_directory, send_file
 import os
 from PIL import Image
 import plat
@@ -78,15 +78,13 @@ def now():
         img.save(destination)
         # Add multiple files to the zip
         zipobj.write(destination, c + '_' + filename)
-        print('target ' + target)
-        print('destination ' + destination)
-        print('filename ' + filename)
-    print(zipobj)
+
+    print(target + '/' + filename[:-4] + '.zip')
 
     # close the Zip File
     zipobj.close()
 
-    return send_image(filename)
+    return send_file(target + '/' + filename[:-4] + '.zip')
 
     # img = Image.open(destination)
     # img = img.resize(plat.now, Image.ANTIALIAS)
