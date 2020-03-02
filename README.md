@@ -1,5 +1,5 @@
-###clone it
-###install requeriments
+## clone it
+## install requeriments
 -- 'pip install -r requeriments.txt
-###run it
+## run it
 -- 'flask run' 
