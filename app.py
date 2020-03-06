@@ -12,11 +12,12 @@ APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 plat_br = ('now', 'sky', 'google', 'vivo')
 plat = {
     'google': (2000, 3000),
-    'sky' : (1000, 1500),
+    'sky': (1000, 1500),
     'vivo': (600, 882),
-    'now' : (220, 340),
+    'now': (220, 340),
 
 }
+
 
 # default access page
 @app.route("/")
@@ -36,6 +37,7 @@ def upload():
     # retrieve file from html file-picker
     upload = request.files.getlist("file")[0]
     print("File name: {}".format(upload.filename))
+    
     filename = upload.filename
 
     # file support verification
@@ -96,6 +98,7 @@ def now():
     # img.save(destination)
     #
     # return send_image('temp.png')
+
 
 # retrieve file from 'static/images' directory
 @app.route('/static/images/<filename>')
