@@ -1,6 +1,6 @@
 # web-app for API image manipulation
 
-from flask import Flask, request, render_template, send_from_directory, send_file
+from flask import Flask, request, redirect, render_template, send_from_directory, send_file
 import os
 from PIL import Image
 import plat
@@ -11,6 +11,14 @@ app = Flask(__name__)
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 plat_br = ('now', 'sky', 'google', 'vivo')
 plat = {
+    'google': (2000, 3000),
+    'sky': (1000, 1500),
+    'vivo': (600, 882),
+    'now': (220, 340),
+
+}
+
+plat_br_v = {
     'google': (2000, 3000),
     'sky': (1000, 1500),
     'vivo': (600, 882),
@@ -39,6 +47,7 @@ def upload():
     print("File name: {}".format(upload.filename))
     
     filename = upload.filename
+    print('Filename ' + filename)
 
     # file support verification
     ext = os.path.splitext(filename)[1]
@@ -54,6 +63,46 @@ def upload():
 
     # forward to processing page
     return render_template("processing.html", image_name=filename)
+
+
+@app.route("/upload2", methods=["GET", "POST"])
+def upload2():
+    # Get filename
+
+
+    # local to save images
+    target = os.path.join(APP_ROOT, 'static/images/')
+    print('target is ' + target)
+
+    # create image directory if not found
+    if not os.path.isdir(target):
+        os.mkdir(target)
+
+    # retrieve file from html file-picker
+    if request.method == "POST":
+        if request.files:
+            filename = request.form['image']
+            poster = Image.open(request.files["poster"])
+            cover = Image.open(request.files["cover"])
+            # still = Image.open(request.files["still"])
+            print(poster)
+            print(cover)
+            # print(still)
+
+            # checando tamanhos POSTER/COVER
+            if poster.size != (2000, 3000) or cover.size != (3840, 2160):
+                print('Poster/Cover dimension is incorrect!')
+                return render_template("error.html", message="The selected file dimensions are incorrect"), 400
+            
+            # create a ZipFile object
+            zipobj = ZipFile(target + 'ArtPacket' + '.zip', 'w')
+
+            # process image
+            for c in plat_br_v:
+                img = poster.resize(plat_br_v[c], Image.ANTIALIAS)
+                print(img)
+
+    return render_template("thankyou.html")
 
 
 # now filename the specified degrees

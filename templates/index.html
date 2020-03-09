@@ -30,13 +30,15 @@
             <h1>Upload your image</h1>
             <h3>this is a test, use vertical posters only, <strong>do not use</strong> horizontal arts</h3>
             <p class="lead"></p>
-            <form id="upload-form" action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
+            <form id="upload-form" action="{{ url_for('upload2') }}" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                 <!-- <input id="file-picker" type="file" name="file" accept="image/*" class="hidden" onchange="this.form.submit()"> -->
                 <label for="file-pickerv">Vertical Artwork</label>
-                <input type="file" name="file" class="form-control-file" id="file-pickerv" accept="image/*">
+                <input type="file" name="poster" class="form-control-file" id="file-pickerv" accept="image/*">
                 <label for="file-pickerh">Horizontal Artwork</label>
-                <input type="file" name="file" class="form-control-file" id="file-pickerh" accept="image/*">
+                <input type="file" name="cover" class="form-control-file2" id="file-pickerh" accept="image/*">
+                <label for="file-pickerh">Still</label>
+                <input type="file" name="still" class="form-control-file2" id="file-pickerh" accept="image/*">
                 <!-- <label for="file-picker" class="btn btn-lg btn-success">Select file</label> -->
                 <button type="submit" class="btn btn-primary mb-2">Submit images</button>
                 </div>
