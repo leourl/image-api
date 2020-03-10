@@ -5,10 +5,10 @@
     border-radius: 0px;
 }
 
-#upload-button,
+/* #upload-button,
 #file-picker {
     margin-top: 30px;
-}
+} */
 
 div#image-container {
     max-width: 500px;

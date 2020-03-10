@@ -10,7 +10,7 @@
     <link href="../static/jumbotron-narrow.css" rel="stylesheet">
 
     <link href="../static/style.css" rel="stylesheet">
-
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 
 </head>
 
@@ -29,15 +29,18 @@
 
         </div>
 
-        <div class="jumbotron">
+        <div class="jumbotron p-3">
             <h1>Upload your image</h1>
-            <p class="lead"></p>
+            <p class="lead">Please select vertical em horizontal artwork</p>
             <form id="upload-form" action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
-                <input id="file-picker" type="file" name="file" accept="image/*" class="hidden"
-                    onchange="this.form.submit()">
-                <label for="file-picker" class="btn btn-lg btn-success">Select file</label>
+                <div class="form-group row p-2">
+                    <label for="file-picker" class="col-sm-3">Select the <strong>vertical</strong> Art</label>
+                    <div class="col-sm-9">
+                        <input class="float-left" id="file-picker" type="file" name="file" accept="image/*">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success btn-sm">Submit</button>
             </form>
-
         </div>
         {% block processing %}{% endblock %}
         <footer class="footer">

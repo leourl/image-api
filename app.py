@@ -65,7 +65,6 @@ def export():
 
     return send_image('temp.png')
 
-
 # retrieve file from 'static/images' directory
 @app.route('/static/images/<filename>')
 def send_image(filename):
