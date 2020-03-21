@@ -10,47 +10,90 @@
         <h4>Selecione os territórios</h4>
         <form id="form-flip" action="{{ url_for('export') }}" method="POST" enctype="multipart/form-data">
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1">
+                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" onclick="terBr();">
                 <label class="form-check-label mr-3" for="exampleRadios1">
                   Brazil
                 </label>
-                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option1">
+                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" onclick="terMx();">
                 <label class="form-check-label" for="exampleRadios2">
                   Mexico
                 </label>
               </div>
-            <div class="border rounded form-check pl-0 mt-3 mb-3">
+              <!-- Territorios BR -->
+            <div class="border rounded form-check pl-0 mt-3 mb-3 hidden" id="terbr">
                 <ul class="pb-0 pl-4 m-3" style="list-style-type:none">
                     <li> <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
                         <label class="form-check-label" for="defaultCheck1">
-                            Plataforma1
+                            PlatBR_1
                         </label>
                     </li>
                     <li> <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
                         <label class="form-check-label" for="defaultCheck2">
-                            Plataforma2
+                            PlatBR_2
                         </label>
                     </li>
                     <li> <input class="form-check-input" type="checkbox" value="" id="defaultCheck3">
                         <label class="form-check-label" for="defaultCheck3">
-                            Plataforma3
+                            PlatBR_3
                         </label>
                     </li>
                     <li> <input class="form-check-input" type="checkbox" value="" id="defaultCheck4">
                         <label class="form-check-label" for="defaultCheck4">
-                            Plataforma4
+                            PlatBR_4
                         </label>
                     </li>
                     <li> <input class="form-check-input" type="checkbox" value="" id="defaultCheck5">
                         <label class="form-check-label" for="defaultCheck5">
-                            Plataforma5
+                            PlatBR_5
                         </label>
                     </li>
                 </ul>
             </div>
+            <!-- Territorios MX -->
+            <div class="border rounded form-check pl-0 mt-3 mb-3 hidden" id="termx">
+                <ul class="pb-0 pl-4 m-3" style="list-style-type:none">
+                    <li> <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                        <label class="form-check-label" for="defaultCheck1">
+                            PlatMX_1
+                        </label>
+                    </li>
+                    <li> <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
+                        <label class="form-check-label" for="defaultCheck2">
+                            PlatMX_2
+                        </label>
+                    </li>
+                    <li> <input class="form-check-input" type="checkbox" value="" id="defaultCheck3">
+                        <label class="form-check-label" for="defaultCheck3">
+                            PlatMX_3
+                        </label>
+                    </li>
+                    <li> <input class="form-check-input" type="checkbox" value="" id="defaultCheck4">
+                        <label class="form-check-label" for="defaultCheck4">
+                            PlatMX_4
+                        </label>
+                    </li>
+                    <li> <input class="form-check-input" type="checkbox" value="" id="defaultCheck5">
+                        <label class="form-check-label" for="defaultCheck5">
+                            PlatMX_5
+                        </label>
+                    </li>
+                </ul>
+            </div>
+
             <button id="btnExport" class="btn btn-lg btn-primary" type="submit" name="mode" value="vertical">Export</button>
             <input type="text" class="hidden" name="image" value="{{ image_name }}">
         </form>
     </div>
 </div>
+<script>
+    function terBr(){
+        document.getElementById('terbr').style.display ='block';
+        document.getElementById('termx').style.display ='none';
+    }
+    function terMx(){
+        document.getElementById('terbr').style.display ='none';
+        document.getElementById('termx').style.display ='block';
+    }
+
+</script>
 {% endblock %}

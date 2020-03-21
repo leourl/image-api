@@ -13,7 +13,6 @@ APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 def main():
     return render_template('index.html')
 
-
 # upload selected image and forward to processing page
 @app.route("/upload", methods=["POST"])
 def upload():
@@ -73,4 +72,4 @@ def send_image(filename):
 
 if __name__ == "__main__":
     app.run()
-
+    
