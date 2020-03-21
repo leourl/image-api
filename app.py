@@ -13,7 +13,6 @@ APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 def main():
     return render_template('index.html')
 
-
 # upload selected image and forward to processing page
 @app.route("/upload", methods=["POST"])
 def upload():
@@ -25,8 +24,11 @@ def upload():
 
     # retrieve file from html file-picker
     upload = request.files.getlist("file")[0]
+    upload2 = request.files.getlist("file")[1]
     print("File name: {}".format(upload.filename))
+    print("File name: {}".format(upload2.filename))
     filename = upload.filename
+    filename2 = upload2.filename
 
     # file support verification
     ext = os.path.splitext(filename)[1]
@@ -37,17 +39,18 @@ def upload():
 
     # save file
     destination = "/".join([target, filename])
+    destination2 = "/".join([target, filename2])
     print("File saved to to:", destination)
     upload.save(destination)
+    upload.save(destination2)
 
     # forward to processing page
-    return render_template("processing.html", image_name=filename)
+    return render_template("processing.html", image_name=filename, image_name2=filename2)
 
 # rotate filename the specified degrees
 @app.route("/export", methods=["POST"])
 def export():
     # retrieve parameters from html form
-    angle = request.form['angle']
     filename = request.form['image']
 
     # open and process image
