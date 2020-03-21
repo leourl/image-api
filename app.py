@@ -42,7 +42,7 @@ def upload():
     destination2 = "/".join([target, filename2])
     print("File saved to to:", destination)
     upload.save(destination)
-    upload.save(destination2)
+    upload2.save(destination2)
 
     # forward to processing page
     return render_template("processing.html", image_name=filename, image_name2=filename2)

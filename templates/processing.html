@@ -20,12 +20,8 @@
                   Mexico
                 </label>
               </div>
-<<<<<<< HEAD
               <!-- Territorios BR -->
-            <div class="border rounded form-check pl-0 mt-3 mb-3 hidden" id="terbr">
-=======
-            <div class="border rounded form-check pl-0 mt-3 mb-3 hidden">
->>>>>>> 4ef63ffc587137bc9b0052cd6785e5a50bd493b8
+            <div class="border rounded form-check pl-0 mt-3 mb-3" id="terbr" style="display: none;">
                 <ul class="pb-0 pl-4 m-3" style="list-style-type:none">
                     <li> <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
                         <label class="form-check-label" for="defaultCheck1">
@@ -55,7 +51,7 @@
                 </ul>
             </div>
             <!-- Territorios MX -->
-            <div class="border rounded form-check pl-0 mt-3 mb-3 hidden" id="termx">
+            <div class="border rounded form-check pl-0 mt-3 mb-3" id="termx" style="display: none;">
                 <ul class="pb-0 pl-4 m-3" style="list-style-type:none">
                     <li> <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
                         <label class="form-check-label" for="defaultCheck1">
@@ -85,19 +81,21 @@
                 </ul>
             </div>
 
-            <button id="btnExport" class="btn btn-lg btn-primary" type="submit" name="mode" value="vertical">Export</button>
+            <button id="btnExport" class="btn btn-lg btn-primary" type="submit" name="mode" value="vertical" style="display: none;">Export</button>
             <input type="text" class="hidden" name="image" value="{{ image_name }}">
         </form>
     </div>
 </div>
 <script>
     function terBr(){
-        document.getElementById('terbr').style.display ='block';
-        document.getElementById('termx').style.display ='none';
+        document.getElementById('terbr').style.display = 'block';
+        document.getElementById('termx').style.display = 'none';
+        document.getElementById('btnExport').style.display = 'block';
     }
     function terMx(){
-        document.getElementById('terbr').style.display ='none';
-        document.getElementById('termx').style.display ='block';
+        document.getElementById('terbr').style.display = 'none';
+        document.getElementById('termx').style.display = 'block';
+        document.getElementById('btnExport').style.display = 'block';
     }
 
 </script>
